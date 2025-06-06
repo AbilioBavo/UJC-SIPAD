@@ -3,7 +3,9 @@ package com.bavo.UJC_SIPAD.service;
 import com.bavo.UJC_SIPAD.dto.request.DisciplinaRequestDTO;
 import com.bavo.UJC_SIPAD.dto.response.DisciplinaResponseDTO;
 import com.bavo.UJC_SIPAD.model.Disciplina;
+import com.bavo.UJC_SIPAD.model.Docente;
 import com.bavo.UJC_SIPAD.repository.DisciplinaRepository;
+import com.bavo.UJC_SIPAD.repository.DocenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,10 @@ import java.util.stream.Collectors;
 public class DisciplinaService {
     @Autowired
     private DisciplinaRepository repository;
+
+
+    @Autowired
+    private DocenteRepository docenteRepository;
 
     public List<DisciplinaResponseDTO> listarTodos() {
         return repository.findAll().stream()
@@ -51,5 +57,19 @@ public class DisciplinaService {
             return true;
         }
         return false;
+    }
+
+    public DisciplinaResponseDTO alocarDocente(Long disciplinaId, Long docenteId) {
+        Optional<Disciplina> disciplinaOpt = repository.findById(disciplinaId);
+        if (disciplinaOpt.isEmpty()) return null;
+        Disciplina disciplina = disciplinaOpt.get();
+        Docente novoDocente = null;
+        if (docenteId != null) {
+            Optional<Docente> docenteOpt = docenteRepository.findById(docenteId);
+            if (docenteOpt.isEmpty()) return null;
+            novoDocente = docenteOpt.get();
+        }
+        disciplina.setDocente(novoDocente);
+        return DisciplinaResponseDTO.fromEntity(repository.save(disciplina));
     }
 }

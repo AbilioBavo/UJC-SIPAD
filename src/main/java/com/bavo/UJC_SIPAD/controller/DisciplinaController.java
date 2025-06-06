@@ -54,4 +54,13 @@ public class DisciplinaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}/alocar-docente")
+    public ResponseEntity<DisciplinaResponseDTO> alocarDocente(@PathVariable Long id, @RequestBody Long docenteId) {
+        DisciplinaResponseDTO response = service.alocarDocente(id, docenteId);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
 }
