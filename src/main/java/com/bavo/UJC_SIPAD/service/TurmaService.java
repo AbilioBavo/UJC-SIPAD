@@ -2,7 +2,9 @@ package com.bavo.UJC_SIPAD.service;
 
 import com.bavo.UJC_SIPAD.dto.request.TurmaRequestDTO;
 import com.bavo.UJC_SIPAD.dto.response.TurmaResponseDTO;
+import com.bavo.UJC_SIPAD.model.Disciplina;
 import com.bavo.UJC_SIPAD.model.Turma;
+import com.bavo.UJC_SIPAD.repository.DisciplinaRepository;
 import com.bavo.UJC_SIPAD.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 public class TurmaService {
     @Autowired
     private TurmaRepository repository;
+
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
 
     public List<TurmaResponseDTO> listarTodos() {
         return repository.findAll().stream()
@@ -53,5 +58,24 @@ public class TurmaService {
             return true;
         }
         return false;
+    }
+
+    public TurmaResponseDTO associarDisciplinas(Long turmaId, List<Long> disciplinaIds) {
+        Optional<Turma> turmaOpt = repository.findById(turmaId);
+        if (turmaOpt.isEmpty()) return null;
+        Turma turma = turmaOpt.get();
+        List<Disciplina> disciplinas = disciplinaRepository.findAllById(disciplinaIds);
+        turma.setDisciplinas(disciplinas);
+        // Atualiza o lado proprietário do relacionamento
+        for (Disciplina d : disciplinas) {
+            List<Turma> turmas = d.getTurmas();
+            if (turmas == null) turmas = new java.util.ArrayList<>();
+            if (!turmas.contains(turma)) {
+                turmas.add(turma);
+                d.setTurmas(turmas);
+                disciplinaRepository.save(d);
+            }
+        }
+        return TurmaResponseDTO.fromEntity(repository.save(turma));
     }
 }

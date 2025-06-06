@@ -54,4 +54,13 @@ public class TurmaController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}/disciplinas")
+    public ResponseEntity<TurmaResponseDTO> associarDisciplinas(@PathVariable Long id, @RequestBody List<Long> disciplinaIds) {
+        TurmaResponseDTO response = service.associarDisciplinas(id, disciplinaIds);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
 }
