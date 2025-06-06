@@ -4,7 +4,9 @@ import com.bavo.UJC_SIPAD.dto.request.DisciplinaRequestDTO;
 import com.bavo.UJC_SIPAD.dto.response.DisciplinaResponseDTO;
 import com.bavo.UJC_SIPAD.model.Disciplina;
 import com.bavo.UJC_SIPAD.model.Docente;
+import com.bavo.UJC_SIPAD.model.DisciplinaDocenteHistorico;
 import com.bavo.UJC_SIPAD.repository.DisciplinaRepository;
+import com.bavo.UJC_SIPAD.repository.DisciplinaDocenteHistoricoRepository;
 import com.bavo.UJC_SIPAD.repository.DocenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ public class DisciplinaService {
     @Autowired
     private DisciplinaRepository repository;
 
+    @Autowired
+    private DisciplinaDocenteHistoricoRepository historicoRepository;
 
     @Autowired
     private DocenteRepository docenteRepository;
@@ -68,6 +72,14 @@ public class DisciplinaService {
             Optional<Docente> docenteOpt = docenteRepository.findById(docenteId);
             if (docenteOpt.isEmpty()) return null;
             novoDocente = docenteOpt.get();
+        }
+        // Se já existe um docente, salva no histórico
+        if (disciplina.getDocente() != null) {
+            DisciplinaDocenteHistorico hist = new DisciplinaDocenteHistorico();
+            hist.setDisciplina(disciplina);
+            hist.setDocente(disciplina.getDocente());
+            hist.setDataAlocacao(java.time.LocalDateTime.now());
+            historicoRepository.save(hist);
         }
         disciplina.setDocente(novoDocente);
         return DisciplinaResponseDTO.fromEntity(repository.save(disciplina));
