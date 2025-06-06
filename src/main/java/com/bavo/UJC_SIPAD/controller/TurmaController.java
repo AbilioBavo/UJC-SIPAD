@@ -18,18 +18,18 @@ public class TurmaController {
 
     @GetMapping("/")
     public List<TurmaResponseDTO> listar() {
-        return service.listarTodosDTO();
+        return service.listarTodos();
     }
 
     @PostMapping("/criar")
     public ResponseEntity<TurmaResponseDTO> criar(@RequestBody TurmaRequestDTO dto) {
-        TurmaResponseDTO response = service.salvarDTO(dto);
+        TurmaResponseDTO response = service.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TurmaResponseDTO> buscarPorId(@PathVariable Long id) {
-        TurmaResponseDTO dto = service.buscarPorIdDTO(id);
+        TurmaResponseDTO dto = service.buscarPorId(id);
         if (dto == null) {
             return ResponseEntity.notFound().build();
         }
@@ -38,7 +38,7 @@ public class TurmaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TurmaResponseDTO> atualizar(@PathVariable Long id, @RequestBody TurmaRequestDTO dto) {
-        TurmaResponseDTO atualizado = service.atualizarDTO(id, dto);
+        TurmaResponseDTO atualizado = service.atualizar(id, dto);
         if (atualizado == null) {
             return ResponseEntity.notFound().build();
         }

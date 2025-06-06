@@ -16,33 +16,25 @@ public class DisciplinaService {
     @Autowired
     private DisciplinaRepository repository;
 
-    public List<Disciplina> listarTodos() {
-        return repository.findAll();
-    }
-
-    public Disciplina salvar(Disciplina disciplina) {
-        return repository.save(disciplina);
-    }
-
-    public List<DisciplinaResponseDTO> listarTodosDTO() {
+    public List<DisciplinaResponseDTO> listarTodos() {
         return repository.findAll().stream()
             .map(DisciplinaResponseDTO::fromEntity)
             .collect(Collectors.toList());
     }
 
-    public DisciplinaResponseDTO salvarDTO(DisciplinaRequestDTO dto) {
+    public DisciplinaResponseDTO salvar(DisciplinaRequestDTO dto) {
         Disciplina disciplina = new Disciplina();
         disciplina.setNome(dto.getNome());
         disciplina.setCargaHoraria(dto.getCargaHoraria());
         return DisciplinaResponseDTO.fromEntity(repository.save(disciplina));
     }
 
-    public DisciplinaResponseDTO buscarPorIdDTO(Long id) {
+    public DisciplinaResponseDTO buscarPorId(Long id) {
         Optional<Disciplina> disciplina = repository.findById(id);
         return disciplina.map(DisciplinaResponseDTO::fromEntity).orElse(null);
     }
 
-    public DisciplinaResponseDTO atualizarDTO(Long id, DisciplinaRequestDTO dto) {
+    public DisciplinaResponseDTO atualizar(Long id, DisciplinaRequestDTO dto) {
         Optional<Disciplina> disciplinaOpt = repository.findById(id);
         if (disciplinaOpt.isPresent()) {
             Disciplina disciplina = disciplinaOpt.get();

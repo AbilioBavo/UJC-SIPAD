@@ -16,21 +16,13 @@ public class TurmaService {
     @Autowired
     private TurmaRepository repository;
 
-    public List<Turma> listarTodos() {
-        return repository.findAll();
-    }
-
-    public Turma salvar(Turma turma) {
-        return repository.save(turma);
-    }
-
-    public List<TurmaResponseDTO> listarTodosDTO() {
+    public List<TurmaResponseDTO> listarTodos() {
         return repository.findAll().stream()
             .map(TurmaResponseDTO::fromEntity)
             .collect(Collectors.toList());
     }
 
-    public TurmaResponseDTO salvarDTO(TurmaRequestDTO dto) {
+    public TurmaResponseDTO salvar(TurmaRequestDTO dto) {
         Turma turma = new Turma();
         turma.setTurno(dto.getTurno());
         turma.setAno(dto.getAno());
@@ -38,12 +30,12 @@ public class TurmaService {
         return TurmaResponseDTO.fromEntity(repository.save(turma));
     }
 
-    public TurmaResponseDTO buscarPorIdDTO(Long id) {
+    public TurmaResponseDTO buscarPorId(Long id) {
         Optional<Turma> turma = repository.findById(id);
         return turma.map(TurmaResponseDTO::fromEntity).orElse(null);
     }
 
-    public TurmaResponseDTO atualizarDTO(Long id, TurmaRequestDTO dto) {
+    public TurmaResponseDTO atualizar(Long id, TurmaRequestDTO dto) {
         Optional<Turma> turmaOpt = repository.findById(id);
         if (turmaOpt.isPresent()) {
             Turma turma = turmaOpt.get();

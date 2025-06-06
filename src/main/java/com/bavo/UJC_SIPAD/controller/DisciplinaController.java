@@ -18,18 +18,18 @@ public class DisciplinaController {
 
     @GetMapping("/")
     public List<DisciplinaResponseDTO> listar() {
-        return service.listarTodosDTO();
+        return service.listarTodos();
     }
 
     @PostMapping("/criar")
     public ResponseEntity<DisciplinaResponseDTO> criar(@RequestBody DisciplinaRequestDTO dto) {
-        DisciplinaResponseDTO response = service.salvarDTO(dto);
+        DisciplinaResponseDTO response = service.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DisciplinaResponseDTO> buscarPorId(@PathVariable Long id) {
-        DisciplinaResponseDTO dto = service.buscarPorIdDTO(id);
+        DisciplinaResponseDTO dto = service.buscarPorId(id);
         if (dto == null) {
             return ResponseEntity.notFound().build();
         }
@@ -38,7 +38,7 @@ public class DisciplinaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<DisciplinaResponseDTO> atualizar(@PathVariable Long id, @RequestBody DisciplinaRequestDTO dto) {
-        DisciplinaResponseDTO atualizado = service.atualizarDTO(id, dto);
+        DisciplinaResponseDTO atualizado = service.atualizar(id, dto);
         if (atualizado == null) {
             return ResponseEntity.notFound().build();
         }
