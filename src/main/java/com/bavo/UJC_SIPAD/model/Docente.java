@@ -2,6 +2,8 @@ package com.bavo.UJC_SIPAD.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +19,7 @@ public class Docente {
     private String telefone;
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "docente")
     private List<Disciplina> disciplinas;
 }

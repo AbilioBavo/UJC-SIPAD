@@ -1,5 +1,9 @@
 package com.bavo.UJC_SIPAD.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,4 +17,8 @@ public class Turma {
     private String turno;
     private String ano;
     private String semestre;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "turmas")
+    private List<Disciplina> disciplinas;
 }
