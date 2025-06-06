@@ -2,6 +2,7 @@ package com.bavo.UJC_SIPAD.service;
 
 import com.bavo.UJC_SIPAD.dto.request.CursoRequestDTO;
 import com.bavo.UJC_SIPAD.dto.response.CursoResponseDTO;
+import com.bavo.UJC_SIPAD.dto.response.DisciplinaResponseDTO;
 import com.bavo.UJC_SIPAD.model.Curso;
 import com.bavo.UJC_SIPAD.model.Disciplina;
 import com.bavo.UJC_SIPAD.repository.CursoRepository;
@@ -82,5 +83,14 @@ public class CursoService {
             }
         }
         return CursoResponseDTO.fromEntity(repository.save(curso));
+    }
+
+    public List<DisciplinaResponseDTO> listarDisciplinasDoCurso(Long cursoId) {
+        return repository.findById(cursoId)
+            .map(Curso::getDisciplinas)
+            .orElse(java.util.Collections.emptyList())
+            .stream()
+            .map(DisciplinaResponseDTO::fromEntity)
+            .collect(Collectors.toList());
     }
 }

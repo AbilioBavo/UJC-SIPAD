@@ -2,6 +2,7 @@ package com.bavo.UJC_SIPAD.controller;
 
 import com.bavo.UJC_SIPAD.dto.request.CursoRequestDTO;
 import com.bavo.UJC_SIPAD.dto.response.CursoResponseDTO;
+import com.bavo.UJC_SIPAD.dto.response.DisciplinaResponseDTO;
 import com.bavo.UJC_SIPAD.service.CursoService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,4 +65,13 @@ public class CursoController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}/disciplinas")
+    public ResponseEntity<List<DisciplinaResponseDTO>> listarDisciplinasDoCurso(@PathVariable Long id) {
+        CursoResponseDTO curso = service.buscarPorIdDTO(id);
+        if (curso == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<DisciplinaResponseDTO> disciplinas = service.listarDisciplinasDoCurso(id);
+        return ResponseEntity.ok(disciplinas);
+    }
 }
