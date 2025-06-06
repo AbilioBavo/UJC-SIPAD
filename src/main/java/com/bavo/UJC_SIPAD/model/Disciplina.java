@@ -1,5 +1,15 @@
 package com.bavo.UJC_SIPAD.model;
 
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
 public class Disciplina {
-    // Entidade Disciplina
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idDisciplina;
+    
+    private String nome;
+    private String cargaHoraria;
 }
