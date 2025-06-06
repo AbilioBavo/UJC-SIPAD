@@ -54,4 +54,14 @@ public class CursoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}/disciplinas")
+    public ResponseEntity<CursoResponseDTO> associarDisciplinas(@PathVariable Long id, @RequestBody List<Long> disciplinaIds) {
+        CursoResponseDTO response = service.associarDisciplinas(id, disciplinaIds);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
+
 }
