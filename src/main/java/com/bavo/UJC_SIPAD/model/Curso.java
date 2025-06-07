@@ -17,4 +17,7 @@ public class Curso {
     @JsonIgnore
     @ManyToMany(mappedBy = "cursos")
     private List<Disciplina> disciplinas;
+    
+    @OneToMany(mappedBy = "curso")
+private List<Turma> turmas;
 }

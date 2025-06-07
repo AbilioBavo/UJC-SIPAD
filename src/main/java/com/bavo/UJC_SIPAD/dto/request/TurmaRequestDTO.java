@@ -7,4 +7,5 @@ public class TurmaRequestDTO {
     private String turno;
     private String ano;
     private String semestre;
+    private Long cursoId;
 }
