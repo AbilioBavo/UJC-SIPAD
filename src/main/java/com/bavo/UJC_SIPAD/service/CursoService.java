@@ -3,6 +3,7 @@ package com.bavo.UJC_SIPAD.service;
 import com.bavo.UJC_SIPAD.dto.request.CursoRequestDTO;
 import com.bavo.UJC_SIPAD.dto.response.CursoResponseDTO;
 import com.bavo.UJC_SIPAD.dto.response.DisciplinaResponseDTO;
+import com.bavo.UJC_SIPAD.dto.response.TurmaResponseDTO;
 import com.bavo.UJC_SIPAD.model.Curso;
 import com.bavo.UJC_SIPAD.model.Disciplina;
 import com.bavo.UJC_SIPAD.repository.CursoRepository;
@@ -91,6 +92,18 @@ public class CursoService {
             .orElse(java.util.Collections.emptyList())
             .stream()
             .map(DisciplinaResponseDTO::fromEntity)
+            .collect(Collectors.toList());
+    }
+
+    public List<TurmaResponseDTO> listarTurmasDoCurso(Long cursoId) {
+        Optional<Curso> cursoOpt = repository.findById(cursoId);
+        if (cursoOpt.isEmpty()) return null;
+        Curso curso = cursoOpt.get();
+        // Coleta todas as turmas das disciplinas do curso, evitando duplicatas
+        return curso.getDisciplinas().stream()
+            .flatMap(d -> d.getTurmas().stream())
+            .distinct()
+            .map(TurmaResponseDTO::fromEntity)
             .collect(Collectors.toList());
     }
 }

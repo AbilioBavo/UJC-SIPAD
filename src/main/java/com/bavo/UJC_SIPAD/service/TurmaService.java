@@ -37,11 +37,6 @@ public class TurmaService {
         turma.setTurno(dto.getTurno());
         turma.setAno(dto.getAno());
         turma.setSemestre(dto.getSemestre());
-        if (dto.getCursoId() != null) {
-            Optional<Curso> cursoOpt = cursoRepository.findById(dto.getCursoId());
-            cursoOpt.ifPresent(turma::setCurso);
-        }
-
         return TurmaResponseDTO.fromEntity(repository.save(turma));
     }
 
@@ -57,12 +52,6 @@ public class TurmaService {
             turma.setTurno(dto.getTurno());
             turma.setAno(dto.getAno());
             turma.setSemestre(dto.getSemestre());
-
-            if (dto.getCursoId() != null) {
-                Optional<Curso> cursoOpt = cursoRepository.findById(dto.getCursoId());
-                cursoOpt.ifPresent(turma::setCurso);
-            }
-
             return TurmaResponseDTO.fromEntity(repository.save(turma));
         }
         return null;
@@ -92,6 +81,15 @@ public class TurmaService {
                 disciplinaRepository.save(d);
             }
         }
+        return TurmaResponseDTO.fromEntity(repository.save(turma));
+    }
+
+    public TurmaResponseDTO associarCurso(Long turmaId, Long cursoId) {
+        Optional<Turma> turmaOpt = repository.findById(turmaId);
+        Optional<Curso> cursoOpt = cursoRepository.findById(cursoId);
+        if (turmaOpt.isEmpty() || cursoOpt.isEmpty()) return null;
+        Turma turma = turmaOpt.get();
+        turma.setCurso(cursoOpt.get());
         return TurmaResponseDTO.fromEntity(repository.save(turma));
     }
 }

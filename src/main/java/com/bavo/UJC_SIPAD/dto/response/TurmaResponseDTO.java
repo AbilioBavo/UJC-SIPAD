@@ -9,6 +9,7 @@ public class TurmaResponseDTO {
     private String turno;
     private String ano;
     private String semestre;
+    private CursoResponseDTO curso;
 
     public static TurmaResponseDTO fromEntity(Turma turma) {
         TurmaResponseDTO dto = new TurmaResponseDTO();
@@ -16,6 +17,9 @@ public class TurmaResponseDTO {
         dto.setTurno(turma.getTurno());
         dto.setAno(turma.getAno());
         dto.setSemestre(turma.getSemestre());
+        if (turma.getCurso() != null) {
+            dto.setCurso(CursoResponseDTO.fromEntity(turma.getCurso()));
+        }
         return dto;
     }
 }

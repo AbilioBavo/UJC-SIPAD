@@ -21,7 +21,8 @@ public class Turma {
     @JsonIgnore
     @ManyToMany(mappedBy = "turmas")
     private List<Disciplina> disciplinas;
+
     @ManyToOne
-@JoinColumn(name = "curso_id")
-private Curso curso;
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 }

@@ -63,4 +63,13 @@ public class TurmaController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/curso")
+    public ResponseEntity<TurmaResponseDTO> associarCurso(@PathVariable Long id, @RequestBody Long cursoId) {
+        TurmaResponseDTO response = service.associarCurso(id, cursoId);
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
 }
