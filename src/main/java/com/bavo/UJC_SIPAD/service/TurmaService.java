@@ -2,8 +2,10 @@ package com.bavo.UJC_SIPAD.service;
 
 import com.bavo.UJC_SIPAD.dto.request.TurmaRequestDTO;
 import com.bavo.UJC_SIPAD.dto.response.TurmaResponseDTO;
+import com.bavo.UJC_SIPAD.model.Curso;
 import com.bavo.UJC_SIPAD.model.Disciplina;
 import com.bavo.UJC_SIPAD.model.Turma;
+import com.bavo.UJC_SIPAD.repository.CursoRepository;
 import com.bavo.UJC_SIPAD.repository.DisciplinaRepository;
 import com.bavo.UJC_SIPAD.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class TurmaService {
     @Autowired
     private DisciplinaRepository disciplinaRepository;
 
+    @Autowired
+    private CursoRepository cursoRepository;
+
     public List<TurmaResponseDTO> listarTodos() {
         return repository.findAll().stream()
             .map(TurmaResponseDTO::fromEntity)
@@ -32,6 +37,11 @@ public class TurmaService {
         turma.setTurno(dto.getTurno());
         turma.setAno(dto.getAno());
         turma.setSemestre(dto.getSemestre());
+        if (dto.getCursoId() != null) {
+            Optional<Curso> cursoOpt = cursoRepository.findById(dto.getCursoId());
+            cursoOpt.ifPresent(turma::setCurso);
+        }
+
         return TurmaResponseDTO.fromEntity(repository.save(turma));
     }
 
@@ -47,6 +57,12 @@ public class TurmaService {
             turma.setTurno(dto.getTurno());
             turma.setAno(dto.getAno());
             turma.setSemestre(dto.getSemestre());
+
+            if (dto.getCursoId() != null) {
+                Optional<Curso> cursoOpt = cursoRepository.findById(dto.getCursoId());
+                cursoOpt.ifPresent(turma::setCurso);
+            }
+
             return TurmaResponseDTO.fromEntity(repository.save(turma));
         }
         return null;
